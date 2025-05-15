@@ -36,10 +36,12 @@ export function ParameterTrendChart({
   const minValue = Math.min(...parameter.history.map((h) => h.value))
   const maxValue = Math.max(...parameter.history.map((h) => h.value))
   const padding = (maxValue - minValue) * 0.1
-  const yDomain = [
-    Math.min(minValue - padding, parameter.referenceMin),
-    Math.max(maxValue + padding, parameter.referenceMax),
-  ]
+  const yMin = Math.min(minValue - padding, parameter.referenceMin)
+  const yMax = Math.max(maxValue + padding, parameter.referenceMax)
+
+  // Calculate number of ticks based on range
+  const range = yMax - yMin
+  const tickCount = Math.min(Math.ceil(range) + 1, 8) // Cap at 8 ticks
 
   return (
     <div className="w-full">
@@ -47,7 +49,7 @@ export function ParameterTrendChart({
         {parameter.name} Trend ({parameter.unit})
       </h3>
       <ResponsiveContainer width="100%" height={height}>
-        <LineChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
+        <LineChart data={data} margin={{ top: 10, right: 30, left: 10, bottom: 20 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="date"
@@ -57,8 +59,10 @@ export function ParameterTrendChart({
             tick={{ fontSize: 12 }}
           />
           <YAxis
-            domain={yDomain}
+            domain={[yMin, yMax]}
+            tickCount={tickCount}
             tick={{ fontSize: 12 }}
+            tickFormatter={(value) => value.toFixed(1)}
             label={{
               value: parameter.unit,
               angle: -90,
@@ -66,7 +70,9 @@ export function ParameterTrendChart({
               style: { textAnchor: 'middle' },
             }}
           />
-          <Tooltip />
+          <Tooltip
+            formatter={(value: number) => [`${value.toFixed(1)} ${parameter.unit}`, parameter.name]}
+          />
           {showReferenceRanges && (
             <>
               <ReferenceLine
@@ -74,7 +80,7 @@ export function ParameterTrendChart({
                 stroke="#FF8C00"
                 strokeDasharray="3 3"
                 label={{
-                  value: 'Min',
+                  value: `Min: ${parameter.referenceMin}`,
                   position: 'right',
                   fill: '#FF8C00',
                 }}
@@ -84,7 +90,7 @@ export function ParameterTrendChart({
                 stroke="#FF8C00"
                 strokeDasharray="3 3"
                 label={{
-                  value: 'Max',
+                  value: `Max: ${parameter.referenceMax}`,
                   position: 'right',
                   fill: '#FF8C00',
                 }}
