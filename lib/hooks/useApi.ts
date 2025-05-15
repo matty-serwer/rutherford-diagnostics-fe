@@ -2,6 +2,9 @@
 
 import { useApp } from '../context/AppContext'
 import { API_BASE_URL, ApiResponse, Patient, Test } from '../types'
+import { getMockPatients, getMockTests, getMockPatient, getMockTest } from '../mockData'
+
+const USE_MOCK_DATA = process.env.NODE_ENV === 'development'
 
 export function useApi() {
   const { dispatch } = useApp()
@@ -9,8 +12,14 @@ export function useApi() {
   const fetchPatients = async () => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
-      const response = await fetch(`${API_BASE_URL}/patients`)
-      const data: ApiResponse<Patient[]> = await response.json()
+
+      let data: ApiResponse<Patient[]>
+      if (USE_MOCK_DATA) {
+        data = await getMockPatients()
+      } else {
+        const response = await fetch(`${API_BASE_URL}/patients`)
+        data = await response.json()
+      }
 
       if ('error' in data) {
         dispatch({ type: 'SET_ERROR', payload: data })
@@ -36,8 +45,14 @@ export function useApi() {
   const fetchTests = async () => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
-      const response = await fetch(`${API_BASE_URL}/tests`)
-      const data: ApiResponse<Test[]> = await response.json()
+
+      let data: ApiResponse<Test[]>
+      if (USE_MOCK_DATA) {
+        data = await getMockTests()
+      } else {
+        const response = await fetch(`${API_BASE_URL}/tests`)
+        data = await response.json()
+      }
 
       if ('error' in data) {
         dispatch({ type: 'SET_ERROR', payload: data })
@@ -63,8 +78,14 @@ export function useApi() {
   const getPatient = async (id: number) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
-      const response = await fetch(`${API_BASE_URL}/patients/${id}`)
-      const data: ApiResponse<Patient> = await response.json()
+
+      let data: ApiResponse<Patient>
+      if (USE_MOCK_DATA) {
+        data = await getMockPatient(id)
+      } else {
+        const response = await fetch(`${API_BASE_URL}/patients/${id}`)
+        data = await response.json()
+      }
 
       if ('error' in data) {
         dispatch({ type: 'SET_ERROR', payload: data })
@@ -91,8 +112,14 @@ export function useApi() {
   const getTest = async (id: number) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
-      const response = await fetch(`${API_BASE_URL}/tests/${id}`)
-      const data: ApiResponse<Test> = await response.json()
+
+      let data: ApiResponse<Test>
+      if (USE_MOCK_DATA) {
+        data = await getMockTest(id)
+      } else {
+        const response = await fetch(`${API_BASE_URL}/tests/${id}`)
+        data = await response.json()
+      }
 
       if ('error' in data) {
         dispatch({ type: 'SET_ERROR', payload: data })
