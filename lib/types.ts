@@ -6,15 +6,14 @@ export interface Patient {
   dateOfBirth: string // ISO 8601 format (YYYY-MM-DD)
   ownerName: string
   ownerContact: string
-  tests?: Test[] // Optional since it might not always be included in responses
+  diagnosticHistory?: Test[] // Optional since it might not always be included in responses
 }
 
 export interface Test {
   id: number
   name: string
   datePerformed: string // ISO 8601 format (YYYY-MM-DD)
-  patient?: Patient // Optional to prevent circular reference issues
-  parameters: Parameter[]
+  parameters?: Parameter[] // Optional since it might not be included in the initial response
 }
 
 export interface Parameter {
