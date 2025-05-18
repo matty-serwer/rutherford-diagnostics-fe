@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { Header } from '../../../components/ui/header'
 import { ParameterCard } from '@/components/charts/ParameterCard'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card } from '@/components/ui/card'
 import { Parameter } from '@/lib/types'
 import React from 'react'
@@ -65,6 +65,10 @@ export default function PatientPage({ params }: PatientPageProps) {
     loadPatient()
   }, [id])
 
+  const handleCloseParameterCard = useCallback(() => {
+    setSelectedTest(null)
+  }, [])
+
   if (loading) {
     return <div>Loading...</div>
   }
@@ -111,6 +115,7 @@ export default function PatientPage({ params }: PatientPageProps) {
                             key={parameter.id}
                             parameter={parameter}
                             className="col-span-full md:col-span-2"
+                            onClose={handleCloseParameterCard}
                           />
                         ))}
                       </div>

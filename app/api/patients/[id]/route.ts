@@ -63,7 +63,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const patient = mockPatientData[params.id]
+    const patient = await mockPatientData[params.id]
 
     if (!patient) {
       return new NextResponse('Patient not found', { status: 404 })
