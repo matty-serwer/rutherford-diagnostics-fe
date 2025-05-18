@@ -1,11 +1,21 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 We are using Next.js 15.3.2 which came out after your knowledge cutoff please refer to the Next.js docs at:
 
 https://nextjs.org/docs
+
+Make sure to pay attention to the asynchronous way we should be handling params. Use 'async', destructuring, and await where possible to reference the data: 
+
+```javascript
+async function Page({ params }) {
+  // asynchronous access of `params.id`.
+  const { id } = await params
+  return <p>ID: {id}</p>
+}
+```
 
 We are using TailwindCss Version 4. It does not require a configuration file. The framework has been extended directly into css. Please refer to the docs:
 https://tailwindcss.com/docs
