@@ -1,11 +1,13 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 We are using Next.js 15.3.2 which came out after your knowledge cutoff please refer to the Next.js docs at:
 
 https://nextjs.org/docs
+
+when referencing params in a client component, ALWAYS use React.use(params). Create a typescript interface for the page params.
 
 We are using TailwindCss Version 4. It does not require a configuration file. The framework has been extended directly into css. Please refer to the docs:
 https://tailwindcss.com/docs
