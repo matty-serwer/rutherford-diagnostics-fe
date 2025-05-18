@@ -47,8 +47,8 @@ export function ParameterCard({ parameter, className, onClose }: ParameterCardPr
       </CardHeader>
       <div className="h-[1px] w-full bg-border mb-4" />
       <CardContent>
-        <div className="h-[200px]">
-          <ParameterTrendChart parameter={parameter} height={200} />
+        <div className="h-[300px] w-full">
+          <ParameterTrendChart parameter={parameter} height={300} />
         </div>
       </CardContent>
     </Card>
