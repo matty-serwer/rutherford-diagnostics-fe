@@ -124,35 +124,37 @@ export default function PatientPage({ params }: PatientPageProps) {
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4" id="tests-container">
             <h2 className="text-2xl font-semibold">Tests</h2>
             <Suspense fallback={<div>Loading tests...</div>}>
-              <div className="grid gap-4">
-                {patientData.diagnosticHistory?.map((test) => {
-                  const testDetail = testDetails[test.id]
-                  return (
-                    <Card
-                      key={test.id}
-                      className="cursor-pointer p-4 hover:bg-accent/50 transition-colors"
-                      onClick={() => setSelectedTest(test.id)}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-semibold">{test.name}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(test.datePerformed).toLocaleDateString()}
-                          </p>
-                        </div>
-                        {testDetail?.parameters && (
-                          <div className="text-sm text-muted-foreground">
-                            {testDetail.parameters.length} parameters
+              {!selectedTest && (
+                <div className="grid gap-4">
+                  {patientData.diagnosticHistory?.map((test) => {
+                    const testDetail = testDetails[test.id]
+                    return (
+                      <Card
+                        key={test.id}
+                        className="cursor-pointer p-4 hover:bg-accent/50 transition-colors"
+                        onClick={() => setSelectedTest(test.id)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="font-semibold">{test.name}</h3>
+                            <p className="text-sm text-muted-foreground">
+                              {new Date(test.datePerformed).toLocaleDateString()}
+                            </p>
                           </div>
-                        )}
-                      </div>
-                    </Card>
-                  )
-                })}
-              </div>
+                          {testDetail?.parameters && (
+                            <div className="text-sm text-muted-foreground">
+                              {testDetail.parameters.length} parameters
+                            </div>
+                          )}
+                        </div>
+                      </Card>
+                    )
+                  })}
+                </div>
+              )}
             </Suspense>
           </div>
 
