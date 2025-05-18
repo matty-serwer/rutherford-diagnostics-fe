@@ -34,20 +34,55 @@ async function getPatientData(id: string): Promise<Patient> {
   return res.json()
 }
 
+async function getTestData(testId: number): Promise<Test> {
+  const res = await fetch(`${API_BASE_URL}/tests/${testId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-store'
+  })
+
+  if (!res.ok) {
+    const error = await res.json() as ApiError
+    throw new Error(error.message || 'Failed to fetch test data')
+  }
+
+  return res.json()
+}
+
 export default function PatientPage({ params }: PatientPageProps) {
   const { id } = React.use(params)
   const [selectedTest, setSelectedTest] = useState<number | null>(null)
   const [patientData, setPatientData] = useState<Patient | null>(null)
+  const [testDetails, setTestDetails] = useState<{ [key: number]: Test }>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Fetch patient data
   useEffect(() => {
     async function loadPatient() {
       try {
         const data = await getPatientData(id)
         setPatientData(data)
         setError(null)
-        console.log("data", data)
+
+        // Fetch details for each test
+        const testPromises = data.diagnosticHistory?.map(async (test: Test) => {
+          try {
+            const testData = await getTestData(test.id)
+            return [test.id, testData] as [number, Test]
+          } catch (error) {
+            console.error(`Failed to load test ${test.id}:`, error)
+            return null
+          }
+        }) || []
+
+        const testResults = await Promise.all(testPromises)
+        const testDetailsMap = Object.fromEntries(
+          testResults.filter((result): result is [number, Test] => result !== null)
+        )
+        setTestDetails(testDetailsMap)
       } catch (error) {
         console.error('Failed to load patient:', error)
         setError(error instanceof Error ? error.message : 'Failed to load patient data')
@@ -93,37 +128,52 @@ export default function PatientPage({ params }: PatientPageProps) {
             <h2 className="text-2xl font-semibold">Tests</h2>
             <Suspense fallback={<div>Loading tests...</div>}>
               <div className="grid gap-4">
-                {patientData.tests?.map((test) => (
-                  <div key={test.id}>
-                    {selectedTest === test.id ? (
-                      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {test.parameters.map((parameter) => (
-                          <ParameterCard
-                            key={parameter.id}
-                            parameter={parameter}
-                            className="col-span-full md:col-span-2"
-                            onClose={handleCloseParameterCard}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <Card
-                        className="p-4 hover:bg-accent transition-colors cursor-pointer"
-                        onClick={() => setSelectedTest(test.id)}
-                      >
-                        <div className="flex justify-between items-center">
-                          <h3 className="font-medium">{test.name}</h3>
-                          <span className="text-sm text-muted-foreground">
+                {patientData.diagnosticHistory?.map((test) => {
+                  const testDetail = testDetails[test.id]
+                  return (
+                    <Card
+                      key={test.id}
+                      className="cursor-pointer p-4 hover:bg-accent/50 transition-colors"
+                      onClick={() => setSelectedTest(test.id)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-semibold">{test.name}</h3>
+                          <p className="text-sm text-muted-foreground">
                             {new Date(test.datePerformed).toLocaleDateString()}
-                          </span>
+                          </p>
                         </div>
-                      </Card>
-                    )}
-                  </div>
-                ))}
+                        {testDetail?.parameters && (
+                          <div className="text-sm text-muted-foreground">
+                            {testDetail.parameters.length} parameters
+                          </div>
+                        )}
+                      </div>
+                    </Card>
+                  )
+                })}
               </div>
             </Suspense>
           </div>
+
+          {selectedTest && testDetails[selectedTest]?.parameters && (
+            <div className="mt-8 space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-semibold">
+                  {testDetails[selectedTest].name} Parameters
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {testDetails[selectedTest].parameters.map((parameter) => (
+                  <ParameterCard
+                    key={parameter.id}
+                    parameter={parameter}
+                    onClose={handleCloseParameterCard}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>
