@@ -7,10 +7,11 @@ interface PatientPageProps {
   }
 }
 
-export default function PatientPage({ params }: PatientPageProps) {
+export default async function PatientPage({ params }: PatientPageProps) {
   // TODO: Fetch patient data based on params.id
   // For now, we'll just show a 404 if the ID isn't valid
-  if (!params.id) {
+  const { id } = await params
+  if (!id) {
     notFound()
   }
 
@@ -20,7 +21,7 @@ export default function PatientPage({ params }: PatientPageProps) {
       <main className="container py-6">
         <h1 className="text-3xl font-bold">Patient Details</h1>
         <div className="mt-6">
-          <p>Patient ID: {params.id}</p>
+          <p>Patient ID: {id}</p>
           {/* Patient details will go here */}
         </div>
       </main>
