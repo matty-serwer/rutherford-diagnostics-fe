@@ -116,7 +116,7 @@ export default function PatientPage({ params }: PatientPageProps) {
       <main className="container py-6">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold">{patientData.name}</h1>
+            <h1 className="font-bold text-5xl">{patientData.name}</h1>
             <div className="text-sm text-muted-foreground">
               <p>{patientData.species} - {patientData.breed}</p>
               <p>Owner: {patientData.ownerName}</p>
