@@ -116,65 +116,72 @@ export default function PatientPage({ params }: PatientPageProps) {
       <main className="container py-6">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold">{patientData.name}</h1>
+            <h1 className="font-bold text-5xl">{patientData.name}</h1>
             <div className="text-sm text-muted-foreground">
               <p>{patientData.species} - {patientData.breed}</p>
               <p>Owner: {patientData.ownerName}</p>
               <p>Contact: {patientData.ownerContact}</p>
             </div>
           </div>
-
-          <div className="space-y-4">
-            <h2 className="text-2xl font-semibold">Tests</h2>
-            <Suspense fallback={<div>Loading tests...</div>}>
-              <div className="grid gap-4">
-                {patientData.diagnosticHistory?.map((test) => {
-                  const testDetail = testDetails[test.id]
-                  return (
-                    <Card
-                      key={test.id}
-                      className="cursor-pointer p-4 hover:bg-accent/50 transition-colors"
-                      onClick={() => setSelectedTest(test.id)}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-semibold">{test.name}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(test.datePerformed).toLocaleDateString()}
-                          </p>
-                        </div>
-                        {testDetail?.parameters && (
-                          <div className="text-sm text-muted-foreground">
-                            {testDetail.parameters.length} parameters
+          <div className="tests-container rounded-lg border border-border bg-card p-6">
+            <div className="space-y-4 p-6" id="tests">
+              <h2 className="text-2xl font-semibold">Tests</h2>
+              {/* <div className="rounded-lg border border-border bg-card p-6"> */}
+              <Suspense fallback={<div>Loading tests...</div>}>
+                {!selectedTest && (
+                  <div className="grid gap-6">
+                    {patientData.diagnosticHistory?.map((test) => {
+                      const testDetail = testDetails[test.id]
+                      return (
+                        <Card
+                          key={test.id}
+                          className="cursor-pointer p-6 hover:bg-accent/50 transition-colors shadow-sm"
+                          onClick={() => setSelectedTest(test.id)}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h3 className="font-semibold">{test.name}</h3>
+                              <p className="text-sm text-muted-foreground">
+                                {new Date(test.datePerformed).toLocaleDateString()}
+                              </p>
+                            </div>
+                            {testDetail?.parameters && (
+                              <div className="text-sm text-muted-foreground">
+                                {testDetail.parameters.length}
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    </Card>
-                  )
-                })}
-              </div>
-            </Suspense>
-          </div>
-
-          {selectedTest && testDetails[selectedTest]?.parameters && (
-            <div className="mt-8 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-semibold">
-                  {testDetails[selectedTest].name} Parameters
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 gap-4">
-                {testDetails[selectedTest].parameters.map((parameter) => (
-                  <ParameterCard
-                    key={parameter.id}
-                    parameter={parameter}
-                    onClose={handleCloseParameterCard}
-                    className="w-full"
-                  />
-                ))}
-              </div>
+                        </Card>
+                      )
+                    })}
+                  </div>
+                )}
+              </Suspense>
+              {/* </div> */}
             </div>
-          )}
+
+            {selectedTest && testDetails[selectedTest]?.parameters && (
+              <div className="mt-8 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-2xl font-semibold ml-6">
+                    {patientData.name}'s {testDetails[selectedTest].name}s
+                  </h3>
+                </div>
+                <div className="rounded-lg p-6">
+                  <div className="grid grid-cols-1 gap-6">
+                    {testDetails[selectedTest].parameters.map((parameter) => (
+                      <ParameterCard
+                        key={parameter.id}
+                        parameter={parameter}
+                        onClose={handleCloseParameterCard}
+                        className="w-full"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </main>
     </div>
