@@ -82,7 +82,7 @@ export function ParameterTrendChart({
                 label={{
                   value: `Min: ${parameter.referenceMin}`,
                   position: 'right',
-                  fill: '#FF8C00',
+                  fill: '#772cd4',
                 }}
               />
               <ReferenceLine
@@ -92,7 +92,7 @@ export function ParameterTrendChart({
                 label={{
                   value: `Max: ${parameter.referenceMax}`,
                   position: 'right',
-                  fill: '#FF8C00',
+                  fill: '#772cd4',
                 }}
               />
             </>
@@ -100,9 +100,9 @@ export function ParameterTrendChart({
           <Line
             type="monotone"
             dataKey="value"
-            stroke="#2563eb"
-            strokeWidth={2}
-            dot={{ fill: '#2563eb', r: 4 }}
+            stroke="#772cd4"
+            strokeWidth={3}
+            dot={{ fill: '#772cd4', r: 4 }}
             activeDot={{ r: 6 }}
           />
         </LineChart>
