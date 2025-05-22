@@ -67,6 +67,8 @@ export default function PatientPage({ params }: PatientPageProps) {
         setPatientData(data)
         setError(null)
 
+        console.log(data);
+
         // Fetch details for each test
         const testPromises = data.diagnosticHistory?.map(async (test: Test) => {
           try {
@@ -124,41 +126,43 @@ export default function PatientPage({ params }: PatientPageProps) {
             </div>
           </div>
           <div className="tests-container rounded-lg border border-border bg-card p-6">
-            <div className="space-y-4 p-6" id="tests">
-              <h2 className="text-2xl font-semibold">Tests</h2>
-              {/* <div className="rounded-lg border border-border bg-card p-6"> */}
-              <Suspense fallback={<div>Loading tests...</div>}>
-                {!selectedTest && (
-                  <div className="grid gap-6">
-                    {patientData.diagnosticHistory?.map((test) => {
-                      const testDetail = testDetails[test.id]
-                      return (
-                        <Card
-                          key={test.id}
-                          className="cursor-pointer p-6 hover:bg-accent/50 transition-colors shadow-sm"
-                          onClick={() => setSelectedTest(test.id)}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h3 className="font-semibold">{test.name}</h3>
-                              <p className="text-sm text-muted-foreground">
-                                {new Date(test.datePerformed).toLocaleDateString()}
-                              </p>
-                            </div>
-                            {testDetail?.parameters && (
-                              <div className="text-sm text-muted-foreground">
-                                {testDetail.parameters.length}
+            {!selectedTest && (
+              <div className="space-y-4 p-6" id="tests">
+                <h2 className="text-2xl font-semibold">Tests</h2>
+                {/* <div className="rounded-lg border border-border bg-card p-6"> */}
+                <Suspense fallback={<div>Loading tests...</div>}>
+                  {!selectedTest && (
+                    <div className="grid gap-6">
+                      {patientData.diagnosticHistory?.map((test) => {
+                        const testDetail = testDetails[test.id]
+                        return (
+                          <Card
+                            key={test.id}
+                            className="cursor-pointer p-6 hover:bg-accent/50 transition-colors shadow-sm"
+                            onClick={() => setSelectedTest(test.id)}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <h3 className="font-semibold">{test.name}</h3>
+                                <p className="text-sm text-muted-foreground">
+                                  {new Date(test.datePerformed).toLocaleDateString()}
+                                </p>
                               </div>
-                            )}
-                          </div>
-                        </Card>
-                      )
-                    })}
-                  </div>
-                )}
-              </Suspense>
-              {/* </div> */}
-            </div>
+                              {testDetail?.parameters && (
+                                <div className="text-sm text-muted-foreground">
+                                  {testDetail.parameters.length}
+                                </div>
+                              )}
+                            </div>
+                          </Card>
+                        )
+                      })}
+                    </div>
+                  )}
+                </Suspense>
+                {/* </div> */}
+              </div>
+            )}
 
             {selectedTest && testDetails[selectedTest]?.parameters && (
               <div className="mt-8 space-y-4">

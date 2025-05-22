@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Quattrocento, Questrial, Roboto_Mono } from "next/font/google";
+import { EB_Garamond, Geist, Geist_Mono, Quattrocento, Questrial, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "@/lib/context/AppContext";
 
@@ -21,6 +21,12 @@ const robotoMono = Roboto_Mono({
   weight: ["400"],
 });
 
+const eb_Garamond = EB_Garamond({
+  variable: "--font-eb-garamond",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
 export const metadata: Metadata = {
   title: "Rutherford Diagnostics",
   description: "Medical diagnostic testing and patient management system",
@@ -34,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${quattrocento.variable} ${questrial.variable} ${robotoMono.variable} min-h-screen bg-background font-sans antialiased max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}
+        className={`${quattrocento.variable} ${questrial.variable} ${robotoMono.variable} ${eb_Garamond.variable} min-h-screen bg-background font-sans antialiased max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}
       >
         <AppProvider>{children}</AppProvider>
       </body>

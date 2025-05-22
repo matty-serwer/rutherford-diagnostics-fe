@@ -8,7 +8,7 @@ export function Header() {
           href="/dashboard"
           className="flex items-center space-x-2"
         >
-          <span className="font-bold">Rutherford Diagnostics</span>
+          <span className="font-bold text-primary">Rutherford Diagnostics</span>
         </Link>
         <nav className="flex items-center space-x-6 ml-6">
           <Link
