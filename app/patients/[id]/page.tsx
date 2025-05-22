@@ -74,8 +74,8 @@ export default function PatientPage({ params }: PatientPageProps) {
           try {
             const testData = await getTestData(test.id)
             return [test.id, testData] as [number, Test]
-          } catch (error) {
-            console.error(`Failed to load test ${test.id}:`, error)
+          } catch (_error) {
+            console.error(`Failed to load test ${test.id}:`, _error)
             return null
           }
         }) || []
@@ -85,9 +85,9 @@ export default function PatientPage({ params }: PatientPageProps) {
           testResults.filter((result): result is [number, Test] => result !== null)
         )
         setTestDetails(testDetailsMap)
-      } catch (error) {
-        console.error('Failed to load patient:', error)
-        setError(error instanceof Error ? error.message : 'Failed to load patient data')
+      } catch (_error) {
+        console.error('Failed to load patient:', _error)
+        setError(_error instanceof Error ? _error.message : 'Failed to load patient data')
       } finally {
         setLoading(false)
       }
@@ -168,7 +168,7 @@ export default function PatientPage({ params }: PatientPageProps) {
               <div className="mt-8 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-2xl font-semibold ml-6">
-                    {patientData.name}'s {testDetails[selectedTest].name}s
+                    {patientData.name}&apos;s {testDetails[selectedTest].name}s
                   </h3>
                 </div>
                 <div className="rounded-lg p-6">
