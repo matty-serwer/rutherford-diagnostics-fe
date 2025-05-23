@@ -26,7 +26,7 @@ export function useApi() {
       } else {
         dispatch({ type: 'SET_PATIENTS', payload: data })
       }
-    } catch (error) {
+    } catch {
       dispatch({
         type: 'SET_ERROR',
         payload: {
@@ -59,7 +59,7 @@ export function useApi() {
       } else {
         dispatch({ type: 'SET_TESTS', payload: data })
       }
-    } catch (error) {
+    } catch {
       dispatch({
         type: 'SET_ERROR',
         payload: {
@@ -92,7 +92,7 @@ export function useApi() {
         return null
       }
       return data
-    } catch (error) {
+    } catch {
       dispatch({
         type: 'SET_ERROR',
         payload: {
@@ -126,7 +126,7 @@ export function useApi() {
         return null
       }
       return data
-    } catch (error) {
+    } catch {
       dispatch({
         type: 'SET_ERROR',
         payload: {
