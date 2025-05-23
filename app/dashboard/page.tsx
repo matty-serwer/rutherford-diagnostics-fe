@@ -16,7 +16,7 @@ export default function DashboardPage() {
 
   // Find the blood test with hemoglobin parameter
   const bloodTest = state.tests.find((test) => test.name === 'Blood Test')
-  const hemoglobinParameter = bloodTest?.parameters.find(
+  const hemoglobinParameter = bloodTest?.parameters?.find(
     (param) => param.name === 'Hemoglobin'
   )
 

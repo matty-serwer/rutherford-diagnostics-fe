@@ -27,7 +27,6 @@ export function useApi() {
         dispatch({ type: 'SET_PATIENTS', payload: data })
       }
     } catch (error) {
-      console.error(error)
       dispatch({
         type: 'SET_ERROR',
         payload: {
@@ -61,7 +60,6 @@ export function useApi() {
         dispatch({ type: 'SET_TESTS', payload: data })
       }
     } catch (error) {
-      console.error(error)
       dispatch({
         type: 'SET_ERROR',
         payload: {
@@ -95,7 +93,6 @@ export function useApi() {
       }
       return data
     } catch (error) {
-      console.error(error)
       dispatch({
         type: 'SET_ERROR',
         payload: {
@@ -130,7 +127,6 @@ export function useApi() {
       }
       return data
     } catch (error) {
-      console.error(error)
       dispatch({
         type: 'SET_ERROR',
         payload: {
