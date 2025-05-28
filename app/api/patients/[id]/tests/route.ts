@@ -4,7 +4,7 @@ import { Test } from '@/lib/types'
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
   const patientTests = mockTests.filter(

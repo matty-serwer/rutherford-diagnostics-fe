@@ -11,7 +11,7 @@ export interface Patient {
 
 export interface Test {
   id: number
-  patientId: numberß
+  patientId: number
   name: string
   datePerformed: string // ISO 8601 format (YYYY-MM-DD)
   parameters?: Parameter[] // Optional since it might not be included in the initial response
