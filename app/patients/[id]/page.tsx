@@ -6,7 +6,8 @@ import { Header } from '../../../components/ui/header'
 import { ParameterCard } from '@/components/charts/ParameterCard'
 import { useState, useEffect, useCallback } from 'react'
 import { Card } from '@/components/ui/card'
-import { Patient, Test, ApiError, API_BASE_URL } from '@/lib/types'
+import { Patient, Test } from '@/lib/types'
+import { useApi } from '@/lib/hooks/useApi'
 import React from 'react'
 
 interface PatientParams {
@@ -17,42 +18,9 @@ interface PatientPageProps {
   params: Promise<PatientParams>
 }
 
-async function getPatientData(id: string): Promise<Patient> {
-  const res = await fetch(`${API_BASE_URL}/patients/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    cache: 'no-store'
-  })
-
-  if (!res.ok) {
-    const error = await res.json() as ApiError
-    throw new Error(error.message || 'Failed to fetch patient data')
-  }
-
-  return res.json()
-}
-
-async function getTestData(testId: number): Promise<Test> {
-  const res = await fetch(`${API_BASE_URL}/tests/${testId}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    cache: 'no-store'
-  })
-
-  if (!res.ok) {
-    const error = await res.json() as ApiError
-    throw new Error(error.message || 'Failed to fetch test data')
-  }
-
-  return res.json()
-}
-
 export default function PatientPage({ params }: PatientPageProps) {
   const { id } = React.use(params)
+  const { getPatient, getTest } = useApi()
   const [selectedTest, setSelectedTest] = useState<number | null>(null)
   const [patientData, setPatientData] = useState<Patient | null>(null)
   const [testDetails, setTestDetails] = useState<{ [key: number]: Test }>({})
@@ -63,7 +31,12 @@ export default function PatientPage({ params }: PatientPageProps) {
   useEffect(() => {
     async function loadPatient() {
       try {
-        const data = await getPatientData(id)
+        const data = await getPatient(id)
+        if (!data) {
+          setError('Patient not found')
+          return
+        }
+
         setPatientData(data)
         setError(null)
 
@@ -72,8 +45,8 @@ export default function PatientPage({ params }: PatientPageProps) {
         // Fetch details for each test
         const testPromises = data.diagnosticHistory?.map(async (test: Test) => {
           try {
-            const testData = await getTestData(test.id)
-            return [test.id, testData] as [number, Test]
+            const testData = await getTest(test.id)
+            return testData ? [test.id, testData] as [number, Test] : null
           } catch (_error) {
             console.error(`Failed to load test ${test.id}:`, _error)
             return null
@@ -94,7 +67,7 @@ export default function PatientPage({ params }: PatientPageProps) {
     }
 
     loadPatient()
-  }, [id])
+  }, [id, getPatient, getTest])
 
   const handleCloseParameterCard = useCallback(() => {
     setSelectedTest(null)

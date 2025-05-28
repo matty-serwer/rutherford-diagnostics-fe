@@ -1,10 +1,7 @@
 'use client'
 
 import { useApp } from '../context/AppContext'
-import { API_BASE_URL, ApiResponse, Patient, Test } from '../types'
-import { getMockPatients, getMockTests, getMockPatient, getMockTest } from '../mockData'
-
-const USE_MOCK_DATA = process.env.NODE_ENV === 'development'
+import { API_BASE_URL, ApiResponse, Patient, Test, ApiError } from '../types'
 
 export function useApi() {
   const { dispatch } = useApp()
@@ -13,20 +10,23 @@ export function useApi() {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
 
-      let data: ApiResponse<Patient[]>
-      if (USE_MOCK_DATA) {
-        data = await getMockPatients()
-      } else {
-        const response = await fetch(`${API_BASE_URL}/patients`)
-        data = await response.json()
+      const response = await fetch(`${API_BASE_URL}/patients`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store'
+      })
+
+      if (!response.ok) {
+        const error = await response.json() as ApiError
+        dispatch({ type: 'SET_ERROR', payload: error })
+        return
       }
 
-      if ('error' in data) {
-        dispatch({ type: 'SET_ERROR', payload: data })
-      } else {
-        dispatch({ type: 'SET_PATIENTS', payload: data })
-      }
-    } catch {
+      const data = await response.json()
+      dispatch({ type: 'SET_PATIENTS', payload: data })
+    } catch (error) {
       dispatch({
         type: 'SET_ERROR',
         payload: {
@@ -46,20 +46,23 @@ export function useApi() {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
 
-      let data: ApiResponse<Test[]>
-      if (USE_MOCK_DATA) {
-        data = await getMockTests()
-      } else {
-        const response = await fetch(`${API_BASE_URL}/tests`)
-        data = await response.json()
+      const response = await fetch(`${API_BASE_URL}/tests`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store'
+      })
+
+      if (!response.ok) {
+        const error = await response.json() as ApiError
+        dispatch({ type: 'SET_ERROR', payload: error })
+        return
       }
 
-      if ('error' in data) {
-        dispatch({ type: 'SET_ERROR', payload: data })
-      } else {
-        dispatch({ type: 'SET_TESTS', payload: data })
-      }
-    } catch {
+      const data = await response.json()
+      dispatch({ type: 'SET_TESTS', payload: data })
+    } catch (error) {
       dispatch({
         type: 'SET_ERROR',
         payload: {
@@ -75,71 +78,47 @@ export function useApi() {
     }
   }
 
-  const getPatient = async (id: number) => {
+  const getPatient = async (id: string): Promise<Patient | null> => {
     try {
-      dispatch({ type: 'SET_LOADING', payload: true })
-
-      let data: ApiResponse<Patient>
-      if (USE_MOCK_DATA) {
-        data = await getMockPatient(id)
-      } else {
-        const response = await fetch(`${API_BASE_URL}/patients/${id}`)
-        data = await response.json()
-      }
-
-      if ('error' in data) {
-        dispatch({ type: 'SET_ERROR', payload: data })
-        return null
-      }
-      return data
-    } catch {
-      dispatch({
-        type: 'SET_ERROR',
-        payload: {
-          status: 500,
-          error: 'Internal Server Error',
-          message: `Failed to fetch patient ${id}`,
-          path: `/patients/${id}`,
-          timestamp: new Date().toISOString(),
+      const response = await fetch(`${API_BASE_URL}/patients/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        cache: 'no-store'
       })
-      return null
-    } finally {
-      dispatch({ type: 'SET_LOADING', payload: false })
+
+      if (!response.ok) {
+        const error = await response.json() as ApiError
+        throw new Error(error.message || 'Failed to fetch patient data')
+      }
+
+      return await response.json()
+    } catch (error) {
+      console.error('Failed to load patient:', error)
+      throw error
     }
   }
 
-  const getTest = async (id: number) => {
+  const getTest = async (id: number): Promise<Test | null> => {
     try {
-      dispatch({ type: 'SET_LOADING', payload: true })
-
-      let data: ApiResponse<Test>
-      if (USE_MOCK_DATA) {
-        data = await getMockTest(id)
-      } else {
-        const response = await fetch(`${API_BASE_URL}/tests/${id}`)
-        data = await response.json()
-      }
-
-      if ('error' in data) {
-        dispatch({ type: 'SET_ERROR', payload: data })
-        return null
-      }
-      return data
-    } catch {
-      dispatch({
-        type: 'SET_ERROR',
-        payload: {
-          status: 500,
-          error: 'Internal Server Error',
-          message: `Failed to fetch test ${id}`,
-          path: `/tests/${id}`,
-          timestamp: new Date().toISOString(),
+      const response = await fetch(`${API_BASE_URL}/tests/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        cache: 'no-store'
       })
-      return null
-    } finally {
-      dispatch({ type: 'SET_LOADING', payload: false })
+
+      if (!response.ok) {
+        const error = await response.json() as ApiError
+        throw new Error(error.message || 'Failed to fetch test data')
+      }
+
+      return await response.json()
+    } catch (error) {
+      console.error('Failed to load test:', error)
+      throw error
     }
   }
 
