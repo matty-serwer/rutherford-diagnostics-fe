@@ -4,9 +4,11 @@ import { Test } from '@/lib/types'
 
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await context.params
-  const patientTests = mockTests.filter((test: Test) => test.patient?.id === Number(id))
+  const { id } = await params
+  const patientTests = mockTests.filter(
+    (test: Test) => test.patientId === Number(id)
+  )
   return NextResponse.json(patientTests)
-} 
+}
