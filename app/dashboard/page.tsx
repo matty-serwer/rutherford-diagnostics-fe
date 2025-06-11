@@ -12,7 +12,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchTests()
-  }, [])
+  }, [fetchTests])
 
   // Find the blood test with hemoglobin parameter
   const bloodTest = state.tests.find((test) => test.name === 'Blood Test')

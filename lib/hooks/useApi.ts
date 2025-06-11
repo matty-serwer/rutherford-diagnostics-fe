@@ -1,12 +1,13 @@
 'use client'
 
 import { useApp } from '../context/AppContext'
-import { API_BASE_URL, ApiResponse, Patient, Test, ApiError } from '../types'
+import { API_BASE_URL, Patient, Test, ApiError } from '../types'
+import { useCallback } from 'react'
 
 export function useApi() {
   const { dispatch } = useApp()
 
-  const fetchPatients = async () => {
+  const fetchPatients = useCallback(async () => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
 
@@ -31,7 +32,7 @@ export function useApi() {
         type: 'SET_ERROR',
         payload: {
           status: 500,
-          error: 'Internal Server Error',
+          error: 'Internal Server Error: ' + error,
           message: 'Failed to fetch patients',
           path: '/patients',
           timestamp: new Date().toISOString(),
@@ -40,9 +41,9 @@ export function useApi() {
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false })
     }
-  }
+  }, [dispatch])
 
-  const fetchTests = async () => {
+  const fetchTests = useCallback(async () => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
 
@@ -67,7 +68,7 @@ export function useApi() {
         type: 'SET_ERROR',
         payload: {
           status: 500,
-          error: 'Internal Server Error',
+          error: 'Internal Server Error: ' + error,
           message: 'Failed to fetch tests',
           path: '/tests',
           timestamp: new Date().toISOString(),
@@ -76,9 +77,9 @@ export function useApi() {
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false })
     }
-  }
+  }, [dispatch])
 
-  const getPatient = async (id: string): Promise<Patient | null> => {
+  const getPatient = useCallback(async (id: string): Promise<Patient | null> => {
     try {
       const response = await fetch(`${API_BASE_URL}/patients/${id}`, {
         method: 'GET',
@@ -98,9 +99,9 @@ export function useApi() {
       console.error('Failed to load patient:', error)
       throw error
     }
-  }
+  }, [])
 
-  const getTest = async (id: number): Promise<Test | null> => {
+  const getTest = useCallback(async (id: number): Promise<Test | null> => {
     try {
       const response = await fetch(`${API_BASE_URL}/tests/${id}`, {
         method: 'GET',
@@ -120,7 +121,7 @@ export function useApi() {
       console.error('Failed to load test:', error)
       throw error
     }
-  }
+  }, [])
 
   return {
     fetchPatients,
@@ -128,4 +129,4 @@ export function useApi() {
     getPatient,
     getTest,
   }
-} 
+}
