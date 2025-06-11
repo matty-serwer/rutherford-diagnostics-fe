@@ -11,7 +11,7 @@ export function useApi() {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
 
-      const response = await fetch(`${API_BASE_URL}/patients`, {
+      const response = await fetch(`${API_BASE_URL}patients`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export function useApi() {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
 
-      const response = await fetch(`${API_BASE_URL}/tests`, {
+      const response = await fetch(`${API_BASE_URL}tests`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ export function useApi() {
 
   const getPatient = useCallback(async (id: string): Promise<Patient | null> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/patients/${id}`, {
+      const response = await fetch(`${API_BASE_URL}patients/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ export function useApi() {
 
   const getTest = useCallback(async (id: number): Promise<Test | null> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/tests/${id}`, {
+      const response = await fetch(`${API_BASE_URL}tests/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
