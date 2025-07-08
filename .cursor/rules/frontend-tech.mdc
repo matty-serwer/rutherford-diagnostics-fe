@@ -1,0 +1,29 @@
+---
+alwaysApply: true
+---
+Unless otherwise specified we will be using the most recent versions of Next.js & TailwindCSS for each project.
+
+Next.js v15.3
+https://nextjs.org/docs
+- Make sure that we are using the rules for Next.js v15.3
+- We will be using app router, and no src folder. 
+- Please reference the docs at: https://nextjs.org/docs
+
+TailwindCSS v4.1
+https://tailwindcss.com/docs
+- Make sure that we are using the rules for Tailwind CSS v4.1
+- Please reference the docs, as much has changed: https://tailwindcss.com/docs
+- Tailwind CSS v4 does not require a tailwind.config.js file. It utilizes a CSS-first configuration approach.
+- Tailwind is now less about classes, and config files, and more about doing everything with css.
+- Do as much styling as you can in the 'global.css' file. 
+- Create variables in 'global.css' to maintain consistency, and customizability to the application.
+- In most cases we will not be using a tailwind.config file, so try not to create one. 
+- If you think you need a tailwind.config file, it's time to check the TailwindCSS v4.1 docs again.
+
+https://ui.shadcn.com/docs
+- 'shadcn-ui' was replaced by 'shadcn'
+- The following syntax should be used:
+- npx shadcn@latest init
+- npx shadcn@latest add button
+- we will add shadcn components whenever available for the task at hand
+- you should customize shadcn components using color, size, border, and other styling variables in the global.css file. 

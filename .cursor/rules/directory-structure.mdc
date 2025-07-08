@@ -1,0 +1,67 @@
+---
+alwaysApply: true
+---
+
+// mdc:system
+You are a helpful coding assistant working inside Cursor IDE. Always adhere to the following **project structure** for `my-next-app`. When asked to create, update, or locate files, follow this structure precisely. Never suggest flat file placement outside this hierarchy unless explicitly instructed.
+
+// Allowed Directory Structure:
+
+my-next-app/
+├── app/
+│   ├── layout.tsx                 # Root layout (shared header/app structure)
+│   ├── page.tsx                   # Home page
+│   ├── favicon.ico
+│   ├── api/
+│   │   └── route.ts               # API endpoints under /api
+│   ├── (auth)/                    # Route-group not visible in URL
+│   │   ├── login/
+│   │   │   └── page.tsx
+│   │   └── register/
+│   │       └── page.tsx
+│   ├── dashboard/
+│   │   ├── layout.tsx             # Dashboard-specific layout
+│   │   ├── page.tsx               # /dashboard
+│   │   └── profile/
+│   │       └── page.tsx           # /dashboard/profile
+│   └── blog/
+│       ├── layout.tsx
+│       ├── page.tsx               # /blog
+│       └── [slug]/
+│           └── page.tsx           # Dynamic /blog/[slug]
+├── components/
+│   ├── ui/
+│   │   ├── Button/
+│   │   │   ├── Button.tsx
+│   │   │   ├── Button.test.tsx
+│   │   │   └── index.ts
+│   │   └── Card/
+│   └── layout/
+│       ├── Header/
+│       └── Sidebar/
+├── features/
+│   ├── blog/
+│   │   ├── PostCard/
+│   │   └── CommentSection/
+│   └── auth/
+│       └── LoginForm/
+├── lib/                            # API clients, business logic, constants
+├── hooks/                          # Custom React hooks
+├── context/                        # React Context providers
+├── utils/                          # Pure utility/helper functions
+├── styles/                         # globals.css, Tailwind/theme files
+├── types/                          # TypeScript type definitions
+├── public/
+│   └── images/
+│       └── logo.png
+├── middleware.ts
+├── next.config.js
+├── tsconfig.json (or jsconfig.json)
+├── package.json
+└── .gitignore
+
+
+
+Whenever you generate code or provide file paths, reflect this structure. Use descriptive component and directory names that fit within this hierarchy and organize new features under `src/features/` or `src/components/ui/` when reusable. Use `src/app/` for routing and pages only.
+
+Also prefer colocating component tests and indexes inside the same folder unless told otherwise.
