@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import localFont from 'next/font/local';
+
+const futura = localFont({
+  src: [
+    { path: '../fonts/Futura-Light.otf', weight: '300', style: 'normal' }, // if you have light
+    { path: '../fonts/Futura-Medium.ttf', weight: '500', style: 'normal' },
+    { path: '../fonts/Futura-MediumItalic.ttf', weight: '500', style: 'italic' },
+    { path: '../fonts/Futura-Bold.ttf', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-futura',
+  display: 'swap',
+});
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${futura.variable}`}
       >
         {children}
       </body>

@@ -139,57 +139,70 @@ export function TestDetails({ testIds, patientName, onClose }: TestDetailsProps)
               </CardContent>
             </Card>
 
-            {/* Charts for each test */}
-            <div className="space-y-6" data-testid="charts-section">
-              <h3 className="text-lg font-semibold" data-testid="charts-title">Parameter Trends Over Time</h3>
-              {tests.map((test) => (
-                <TestChart
-                  key={test.id}
-                  test={test}
-                />
-              ))}
-            </div>
+            {/* Test results - each test shows chart followed by detailed information */}
+            <div className="space-y-8" data-testid="test-results-section">
+              <h2 className="text-lg font-semibold" data-testid="test-results-title">Test Results</h2>
+              {tests.map((test, index) => (
+                <div key={test.id} className="space-y-4" data-testid={`test-group-${test.id}`}>
+                  <h3 className="text-lg font-semibold" data-testid="test-results-title">
+                    {test.name}
+                  </h3>
+                  {/* Test Chart */}
+                  <div data-testid={`chart-section-${test.id}`}>
+                    <h4 className="text-md font-medium mb-3 text-gray-700">
+                      {/* {test.parameterName} Over Time */}
+                    </h4>
+                    <TestChart test={test} />
+                  </div>
 
-            {/* Detailed test information */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Detailed Test Information</h3>
-              {tests.map((test) => (
-                <Card key={test.id} className="border-gray-200">
-                  <CardHeader>
-                    <CardTitle className="text-base">{test.name}</CardTitle>
-                    <CardDescription>
-                      Test ID: {test.id} • Parameter: {test.parameterName}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid gap-3 text-sm">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div><strong>Parameter:</strong> {test.parameterName}</div>
-                        <div><strong>Unit:</strong> {test.unit}</div>
-                        <div><strong>Reference Range:</strong> {test.referenceMin} - {test.referenceMax} {test.unit}</div>
-                        <div><strong>Measurements:</strong> {test.parameters.length}</div>
-                      </div>
-
-                      {test.parameters.length > 0 && (
-                        <div>
-                          <strong>Measurement History:</strong>
-                          <div className="mt-2 space-y-1">
-                            {test.parameters
-                              .sort((a, b) => new Date(b.datePerformed).getTime() - new Date(a.datePerformed).getTime())
-                              .map((param, index) => (
-                                <div key={param.id} className="text-xs bg-gray-50 p-2 rounded">
-                                  <span className="font-medium">{new Date(param.datePerformed).toLocaleDateString()}</span>: {param.value} {test.unit}
-                                  {param.value < test.referenceMin && <span className="text-red-600 ml-2">↓ Below range</span>}
-                                  {param.value > test.referenceMax && <span className="text-red-600 ml-2">↑ Above range</span>}
-                                  {param.value >= test.referenceMin && param.value <= test.referenceMax && <span className="text-green-600 ml-2">✓ Normal</span>}
-                                </div>
-                              ))}
+                  {/* Corresponding Detailed Information */}
+                  <div data-testid={`details-section-${test.id}`}>
+                    <h4 className="text-md font-medium mb-3 text-gray-700">
+                      {/* {test.parameterName} Detailed Information */}
+                    </h4>
+                    <Card className="border-gray-200">
+                      <CardHeader>
+                        <CardTitle className="text-base">{test.name}</CardTitle>
+                        <CardDescription>
+                          Test ID: {test.id} • Parameter: {test.parameterName}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid gap-3 text-sm">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div><strong>Parameter:</strong> {test.parameterName}</div>
+                            <div><strong>Unit:</strong> {test.unit}</div>
+                            <div><strong>Reference Range:</strong> {test.referenceMin} - {test.referenceMax} {test.unit}</div>
+                            <div><strong>Measurements:</strong> {test.parameters.length}</div>
                           </div>
+
+                          {test.parameters.length > 0 && (
+                            <div>
+                              <strong>Measurement History:</strong>
+                              <div className="mt-2 space-y-1">
+                                {test.parameters
+                                  .sort((a, b) => new Date(b.datePerformed).getTime() - new Date(a.datePerformed).getTime())
+                                  .map((param) => (
+                                    <div key={param.id} className="text-xs bg-gray-50 p-2 rounded">
+                                      <span className="font-medium">{new Date(param.datePerformed).toLocaleDateString()}</span>: {param.value} {test.unit}
+                                      {param.value < test.referenceMin && <span className="text-red-600 ml-2">↓ Below range</span>}
+                                      {param.value > test.referenceMax && <span className="text-red-600 ml-2">↑ Above range</span>}
+                                      {param.value >= test.referenceMin && param.value <= test.referenceMax && <span className="text-green-600 ml-2">✓ Normal</span>}
+                                    </div>
+                                  ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Add divider between test groups (except for the last one) */}
+                  {index < tests.length - 1 && (
+                    <hr className="border-gray-200 my-6" data-testid={`divider-${test.id}`} />
+                  )}
+                </div>
               ))}
             </div>
           </div>
