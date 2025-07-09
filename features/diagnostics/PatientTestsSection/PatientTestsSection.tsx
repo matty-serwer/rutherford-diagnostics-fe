@@ -36,15 +36,15 @@ export function PatientTestsSection({ tests, patientName }: PatientTestsSectionP
 
   if (tests.length === 0) {
     return (
-      <Card>
+      <Card data-testid="patient-tests-section">
         <CardHeader>
-          <CardTitle>Test History</CardTitle>
-          <CardDescription>
+          <CardTitle data-testid="section-title">Test History</CardTitle>
+          <CardDescription data-testid="section-description">
             Medical tests performed for {patientName}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-600">
+          <p className="text-gray-600" data-testid="no-tests-message">
             This patient does not have any tests on file.
           </p>
         </CardContent>
@@ -53,27 +53,28 @@ export function PatientTestsSection({ tests, patientName }: PatientTestsSectionP
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="patient-tests-section">
       <Card>
         <CardHeader>
-          <CardTitle>Test History</CardTitle>
-          <CardDescription>
+          <CardTitle data-testid="section-title">Test History</CardTitle>
+          <CardDescription data-testid="section-description">
             Medical tests performed for {patientName} - Click on any test to view detailed charts
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2">
+          <div className="space-y-2" data-testid="tests-list">
             {tests.map((test: TestSummary) => (
               <Button
                 key={test.id}
                 variant="ghost"
                 className="w-full justify-start h-auto p-3"
                 onClick={() => handleTestClick(test.id)}
+                data-testid={`test-button-${test.id}`}
               >
                 <div className="flex justify-between items-center w-full">
                   <div className="text-left">
-                    <p className="font-medium">{test.name}</p>
-                    <p className="text-sm text-gray-600">Test ID: {test.id}</p>
+                    <p className="font-medium" data-testid={`test-name-${test.id}`}>{test.name}</p>
+                    <p className="text-sm text-gray-600" data-testid={`test-id-${test.id}`}>Test ID: {test.id}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-muted-foreground">Click to view charts</p>
@@ -87,11 +88,13 @@ export function PatientTestsSection({ tests, patientName }: PatientTestsSectionP
 
       {/* Show detailed test results when a test is clicked */}
       {showDetails && (
-        <TestDetails
-          testIds={selectedTestIds}
-          patientName={patientName}
-          onClose={handleCloseDetails}
-        />
+        <div data-testid="test-details-section">
+          <TestDetails
+            testIds={selectedTestIds}
+            patientName={patientName}
+            onClose={handleCloseDetails}
+          />
+        </div>
       )}
     </div>
   )

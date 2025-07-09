@@ -42,15 +42,15 @@ export function TestChart({ test }: TestChartProps) {
   // If no parameter data, show message
   if (chartData.length === 0) {
     return (
-      <Card>
+      <Card data-testid={`test-chart-${test.id}`}>
         <CardHeader>
-          <CardTitle className="text-lg">{test.parameterName}</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg" data-testid="chart-title">{test.parameterName}</CardTitle>
+          <CardDescription data-testid="chart-description">
             {test.name} • {test.unit}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-500">No measurement data available for this test</p>
+          <p className="text-sm text-gray-500" data-testid="no-data-message">No measurement data available for this test</p>
         </CardContent>
       </Card>
     )
@@ -64,23 +64,23 @@ export function TestChart({ test }: TestChartProps) {
   const yDomain = [minValue - padding, maxValue + padding]
 
   return (
-    <Card>
+    <Card data-testid={`test-chart-${test.id}`}>
       <CardHeader>
-        <CardTitle className="text-lg">{test.parameterName}</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-lg" data-testid="chart-title">{test.parameterName}</CardTitle>
+        <CardDescription data-testid="chart-description">
           {test.name} • {test.unit}
         </CardDescription>
-        <div className="flex gap-4 text-sm">
-          <span className="text-gray-600">
+        <div className="flex gap-4 text-sm" data-testid="chart-metadata">
+          <span className="text-gray-600" data-testid="reference-range">
             Reference Range: {test.referenceMin} - {test.referenceMax} {test.unit}
           </span>
-          <span className="text-gray-600">
+          <span className="text-gray-600" data-testid="measurement-count">
             {chartData.length} measurement{chartData.length !== 1 ? 's' : ''} recorded
           </span>
         </div>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="min-h-[250px] w-full">
+        <ChartContainer config={chartConfig} className="min-h-[250px] w-full" data-testid="chart-container">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 80 }}>
               <CartesianGrid strokeDasharray="3 3" />

@@ -89,59 +89,59 @@ export function TestDetails({ testIds, patientName, onClose }: TestDetailsProps)
   const totalMeasurements = tests.reduce((sum, test) => sum + test.parameters.length, 0)
 
   return (
-    <Card className="w-full">
+    <Card className="w-full" data-testid="test-details">
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="text-xl">Test Results for {patientName}</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-xl" data-testid="details-title">Test Results for {patientName}</CardTitle>
+            <CardDescription data-testid="details-description">
               Time-series analysis of diagnostic parameters
             </CardDescription>
           </div>
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} data-testid="close-button">
             Close Details
           </Button>
         </div>
       </CardHeader>
       <CardContent>
         {loading ? (
-          <div className="flex justify-center items-center py-8">
+          <div className="flex justify-center items-center py-8" data-testid="loading-state">
             <div className="text-gray-500">Loading test details...</div>
           </div>
         ) : error ? (
-          <Card className="border-red-200 bg-red-50">
+          <Card className="border-red-200 bg-red-50" data-testid="error-state">
             <CardContent className="pt-6">
-              <div className="text-red-800 font-medium">Error Loading Test Details</div>
-              <div className="text-red-600 text-sm mt-1">{error}</div>
+              <div className="text-red-800 font-medium" data-testid="error-title">Error Loading Test Details</div>
+              <div className="text-red-600 text-sm mt-1" data-testid="error-message">{error}</div>
             </CardContent>
           </Card>
         ) : tests.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-gray-500" data-testid="no-data-state">
             No test details available
           </div>
         ) : (
           <div className="space-y-8">
             {/* Summary of all tests */}
-            <Card className="bg-blue-50 border-blue-200">
+            <Card className="bg-blue-50 border-blue-200" data-testid="tests-summary">
               <CardHeader>
-                <CardTitle className="text-lg">Summary</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg" data-testid="summary-title">Summary</CardTitle>
+                <CardDescription data-testid="summary-description">
                   {tests.length} test type{tests.length !== 1 ? 's' : ''} • {totalMeasurements} total measurement{totalMeasurements !== 1 ? 's' : ''}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid gap-2 text-sm">
+                <div className="grid gap-2 text-sm" data-testid="summary-content">
                   {dateRange.earliest && (
-                    <div><strong>Date Range:</strong> {dateRange.earliest} to {dateRange.latest}</div>
+                    <div data-testid="date-range"><strong>Date Range:</strong> {dateRange.earliest} to {dateRange.latest}</div>
                   )}
-                  <div><strong>Test Types:</strong> {tests.map(t => t.parameterName).join(', ')}</div>
+                  <div data-testid="test-types"><strong>Test Types:</strong> {tests.map(t => t.parameterName).join(', ')}</div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Charts for each test */}
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold">Parameter Trends Over Time</h3>
+            <div className="space-y-6" data-testid="charts-section">
+              <h3 className="text-lg font-semibold" data-testid="charts-title">Parameter Trends Over Time</h3>
               {tests.map((test) => (
                 <TestChart
                   key={test.id}
