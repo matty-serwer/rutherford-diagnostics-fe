@@ -3,7 +3,7 @@
  * Updated to match the new cleaner API structure
  */
 
-import { Patient, Test, APIError, PatientSummary, TestSummary } from '@/types'
+import { Patient, TestDetail, ApiError, PatientSummary, TestSummary } from '@/types'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'
 
@@ -16,7 +16,7 @@ async function apiRequest<T>(endpoint: string): Promise<T> {
     const response = await fetch(`${BACKEND_URL}${endpoint}`)
 
     if (!response.ok) {
-      const errorData: APIError = await response.json()
+      const errorData: ApiError = await response.json()
       throw new Error(`API Error: ${errorData.message}`)
     }
 
@@ -53,8 +53,8 @@ export async function getAllTests(): Promise<TestSummary[]> {
 
 /**
  * Fetch a specific test by ID with full details
- * Returns Test object with parameters and reference ranges
+ * Returns TestDetail object with parameters and reference ranges
  */
-export async function getTestById(id: number): Promise<Test> {
-  return apiRequest<Test>(`/test/${id}`)
+export async function getTestById(id: number): Promise<TestDetail> {
+  return apiRequest<TestDetail>(`/test/${id}`)
 } 

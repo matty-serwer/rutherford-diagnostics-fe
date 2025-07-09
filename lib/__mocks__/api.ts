@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { Patient, Test, PatientSummary, TestSummary } from '@/types'
+import { Patient, TestDetail, PatientSummary, TestSummary } from '@/types'
 
 /**
  * Mock data for testing components
@@ -32,7 +32,7 @@ export const mockTestSummaries: TestSummary[] = [
 ]
 
 // Mock test details with parameters
-export const mockTestDetail: Test = {
+export const mockTestDetail: TestDetail = {
   id: 22,
   name: 'Complete Blood Count',
   patient: mockPatientSummary,
@@ -49,7 +49,7 @@ export const mockTestDetail: Test = {
   ]
 }
 
-export const mockTestDetailEmpty: Test = {
+export const mockTestDetailEmpty: TestDetail = {
   id: 25,
   name: 'Empty Test',
   patient: mockPatientSummary,

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { TestChart } from '../TestChart'
 import { getTestById } from '@/lib/api'
-import { Test } from '@/types'
+import { TestDetail } from '@/types'
 
 /**
  * TestDetails Component
@@ -20,7 +20,7 @@ interface TestDetailsProps {
 }
 
 export function TestDetails({ testIds, patientName, onClose }: TestDetailsProps) {
-  const [tests, setTests] = useState<Test[]>([])
+  const [tests, setTests] = useState<TestDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -66,7 +66,7 @@ export function TestDetails({ testIds, patientName, onClose }: TestDetailsProps)
   }, [testIds])
 
   // Calculate date range across all tests
-  const getDateRange = (tests: Test[]): { earliest: string, latest: string } => {
+  const getDateRange = (tests: TestDetail[]): { earliest: string, latest: string } => {
     const allDates: Date[] = []
     tests.forEach(test => {
       test.parameters.forEach(param => {

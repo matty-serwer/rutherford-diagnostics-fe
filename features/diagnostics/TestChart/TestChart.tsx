@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ReferenceLine } from 'recharts'
-import { Test } from '@/types'
+import { TestDetail } from '@/types'
 
 /**
  * TestChart Component
@@ -12,7 +12,7 @@ import { Test } from '@/types'
  */
 
 interface TestChartProps {
-  test: Test // Single test with time-series parameters
+  test: TestDetail // Single test with time-series parameters
 }
 
 export function TestChart({ test }: TestChartProps) {

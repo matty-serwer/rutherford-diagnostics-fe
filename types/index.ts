@@ -3,50 +3,134 @@
  * Updated to match backend where parameters have individual datePerformed fields
  */
 
-// Patient summary (when listed)
+// Redux Store Types
+export type { RootState, AppDispatch } from '../lib/store'
+
+// User and Authentication Types
+export interface User {
+  id: string
+  email: string
+  name: string
+  role: 'admin' | 'veterinarian' | 'technician'
+  isVerified: boolean
+}
+
+// Patient and Diagnostic Types
+export interface Patient {
+  id: number
+  name: string
+  species: string
+  breed: string
+  dateOfBirth: string
+  ownerName: string
+  ownerContact: string
+  diagnosticHistory?: DiagnosticTest[]
+}
+
+export interface DiagnosticTest {
+  id: number
+  name: string
+}
+
+// Test and Parameter Types
+export interface TestParameter {
+  id: number
+  value: number
+  datePerformed: string
+}
+
 export interface PatientSummary {
   id: number
   name: string
   species: string
   breed: string
-  dateOfBirth: string // ISO 8601 format (YYYY-MM-DD)
+  dateOfBirth: string
   ownerName: string
   ownerContact: string
 }
 
-// Patient detail (with diagnostic history)
-export interface Patient extends PatientSummary {
-  diagnosticHistory?: TestSummary[] // Array of test summaries
-}
-
-// Test summary (basic info - NO datePerformed here)
 export interface TestSummary {
   id: number
   name: string
 }
 
-// Test detail (full test information with time-series parameters)
-export interface Test extends TestSummary {
-  patient?: PatientSummary // Optional when nested
-  parameterName: string // e.g., "Hemoglobin"
-  unit: string // e.g., "g/dL"
+export interface TestDetail {
+  id: number
+  name: string
+  patient: PatientSummary
+  parameterName: string
+  unit: string
   referenceMin: number
   referenceMax: number
-  parameters: Parameter[] // Array of time-series measurements
+  parameters: TestParameter[]
 }
 
-// Individual parameter measurement with its own date
-export interface Parameter {
-  id: number
-  value: number
-  datePerformed: string // ISO 8601 format (YYYY-MM-DD) - measurement date
+// UI Types
+export interface Notification {
+  id: string
+  type: 'success' | 'error' | 'warning' | 'info'
+  title: string
+  message?: string
+  duration?: number
+  timestamp: number
 }
 
-// API Error response
-export interface APIError {
+export interface Modal {
+  id: string
+  type: 'confirmation' | 'form' | 'info' | 'custom'
+  title: string
+  content?: string
+  data?: unknown
+  onConfirm?: string
+  onCancel?: string
+}
+
+export type Theme = 'light' | 'dark' | 'system'
+
+// API Response Types
+export interface ApiError {
   timestamp: string
   status: number
   error: string
   message: string
   path: string
+}
+
+// Chart and Visualization Types
+export interface ChartDataPoint {
+  date: string
+  value: number
+  id: number
+}
+
+export interface ChartConfig {
+  showReferenceLines: boolean
+  dateRange: {
+    start: string | null
+    end: string | null
+  }
+  parameterName: string
+  unit: string
+  referenceMin: number
+  referenceMax: number
+}
+
+// Form Types
+export interface LoginFormData {
+  email: string
+  password: string
+}
+
+export interface PatientFormData {
+  name: string
+  species: string
+  breed: string
+  dateOfBirth: string
+  ownerName: string
+  ownerContact: string
+}
+
+export interface TestParameterFormData {
+  value: number
+  datePerformed: string
 } 
