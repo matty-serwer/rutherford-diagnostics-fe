@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { TestDetails } from './TestDetails'
+import { TestDetails } from '../TestDetails'
 import { TestSummary } from '@/types'
 
 /**
@@ -76,13 +76,7 @@ export function PatientTestsSection({ tests, patientName }: PatientTestsSectionP
                     <p className="text-sm text-gray-600">Test ID: {test.id}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium">
-                      {new Date(test.datePerformed).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}
-                    </p>
+                    <p className="text-sm text-muted-foreground">Click to view charts</p>
                   </div>
                 </div>
               </Button>

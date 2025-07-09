@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { getPatientById } from '@/lib/api'
 import { Patient } from '@/types'
 import { notFound } from 'next/navigation'
-import { PatientTestsSection } from '@/components/PatientTestsSection'
+import { PatientTestsSection } from '@/features/diagnostics'
 
 /**
  * Patient Detail Page Component

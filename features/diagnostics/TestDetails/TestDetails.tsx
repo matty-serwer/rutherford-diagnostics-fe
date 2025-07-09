@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { TestChart } from './TestChart'
+import { TestChart } from '../TestChart'
 import { getTestById } from '@/lib/api'
 import { Test } from '@/types'
 

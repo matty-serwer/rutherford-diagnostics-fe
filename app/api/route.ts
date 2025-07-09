@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * GET handler for the base API route
  * Provides basic API information and health check
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   return NextResponse.json(
     {
       message: 'Rutherford Diagnostics API',
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     )
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Invalid JSON payload' },
       { status: 400 }
