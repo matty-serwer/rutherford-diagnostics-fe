@@ -1,9 +1,9 @@
 /**
  * API client functions for Rutherford Diagnostics backend
- * Handles all HTTP requests to the backend API
+ * Updated to match the new cleaner API structure
  */
 
-import { Patient, Test, APIError } from '@/types'
+import { Patient, Test, APIError, PatientSummary, TestSummary } from '@/types'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'
 
@@ -28,33 +28,33 @@ async function apiRequest<T>(endpoint: string): Promise<T> {
 }
 
 /**
- * Fetch all patients from the backend
- * Returns array of Patient objects
+ * Fetch all patients from the backend (summary view)
+ * Returns array of PatientSummary objects
  */
-export async function getAllPatients(): Promise<Patient[]> {
-  return apiRequest<Patient[]>('/patients')
+export async function getAllPatients(): Promise<PatientSummary[]> {
+  return apiRequest<PatientSummary[]>('/patient')
 }
 
 /**
- * Fetch a specific patient by ID
- * Returns Patient object with full details
+ * Fetch a specific patient by ID with diagnostic history
+ * Returns Patient object with diagnosticHistory
  */
 export async function getPatientById(id: number): Promise<Patient> {
-  return apiRequest<Patient>(`/patients/${id}`)
+  return apiRequest<Patient>(`/patient/${id}`)
 }
 
 /**
- * Fetch all tests from the backend
- * Returns array of Test objects
+ * Fetch all tests from the backend (summary view)
+ * Returns array of TestSummary objects
  */
-export async function getAllTests(): Promise<Test[]> {
-  return apiRequest<Test[]>('/tests')
+export async function getAllTests(): Promise<TestSummary[]> {
+  return apiRequest<TestSummary[]>('/test')
 }
 
 /**
- * Fetch a specific test by ID
- * Returns Test object with full details
+ * Fetch a specific test by ID with full details
+ * Returns Test object with parameters and reference ranges
  */
 export async function getTestById(id: number): Promise<Test> {
-  return apiRequest<Test>(`/tests/${id}`)
+  return apiRequest<Test>(`/test/${id}`)
 } 

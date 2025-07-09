@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { getAllPatients } from '@/lib/api'
-import { Patient } from '@/types'
+import { PatientSummary } from '@/types'
 
 /**
  * Dashboard Page Component
@@ -9,7 +9,7 @@ import { Patient } from '@/types'
  * Serves as the main landing page for logged-in users
  */
 export default async function DashboardPage() {
-  let patients: Patient[] = []
+  let patients: PatientSummary[] = []
   let error: string | null = null
 
   try {
@@ -57,7 +57,7 @@ export default async function DashboardPage() {
               </CardHeader>
             </Card>
           ) : (
-            patients.map((patient) => (
+            patients.map((patient: PatientSummary) => (
               <Link
                 key={patient.id}
                 href={`/patient/${patient.id}`}
