@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { getPatientById } from '@/lib/api'
 import { Patient } from '@/types'
 import { notFound } from 'next/navigation'
+import { PatientTestsSection } from '@/features/diagnostics'
 
 /**
  * Patient Detail Page Component
@@ -95,31 +96,11 @@ export default async function PatientPage({ params }: PatientPageProps) {
             </CardContent>
           </Card>
 
-          {patient.tests && patient.tests.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Test History</CardTitle>
-                <CardDescription>
-                  Previous tests performed for {patient.name}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {patient.tests.map((test) => (
-                    <div key={test.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                      <div>
-                        <p className="font-medium">{test.name}</p>
-                        <p className="text-sm text-gray-600">Test ID: {test.id}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium">{test.datePerformed}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
+          {/* Test History Section with Charts */}
+          <PatientTestsSection
+            tests={patient.diagnosticHistory || []}
+            patientName={patient.name}
+          />
         </div>
       ) : null}
     </div>

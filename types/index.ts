@@ -1,9 +1,10 @@
 /**
  * TypeScript definitions for Rutherford Diagnostics API data models
- * Based on backend API documentation
+ * Updated to match backend where parameters have individual datePerformed fields
  */
 
-export interface Patient {
+// Patient summary (when listed)
+export interface PatientSummary {
   id: number
   name: string
   species: string
@@ -11,34 +12,37 @@ export interface Patient {
   dateOfBirth: string // ISO 8601 format (YYYY-MM-DD)
   ownerName: string
   ownerContact: string
-  tests?: Test[] // Optional when nested to prevent circular references
 }
 
-export interface Test {
-  id: number
-  name: string
-  datePerformed: string // ISO 8601 format (YYYY-MM-DD)
-  patient?: Patient // Optional when nested to prevent circular references
-  parameters?: Parameter[] // Optional when nested to prevent circular references
+// Patient detail (with diagnostic history)
+export interface Patient extends PatientSummary {
+  diagnosticHistory?: TestSummary[] // Array of test summaries
 }
 
-export interface Parameter {
+// Test summary (basic info - NO datePerformed here)
+export interface TestSummary {
   id: number
   name: string
-  unit: string
+}
+
+// Test detail (full test information with time-series parameters)
+export interface Test extends TestSummary {
+  patient?: PatientSummary // Optional when nested
+  parameterName: string // e.g., "Hemoglobin"
+  unit: string // e.g., "g/dL"
   referenceMin: number
   referenceMax: number
-  test?: Test // Optional when nested to prevent circular references
-  history?: ResultHistory[] // Optional when nested to prevent circular references
+  parameters: Parameter[] // Array of time-series measurements
 }
 
-export interface ResultHistory {
+// Individual parameter measurement with its own date
+export interface Parameter {
   id: number
-  resultDate: string // ISO 8601 format (YYYY-MM-DD)
   value: number
-  parameter?: Parameter // Optional when nested to prevent circular references
+  datePerformed: string // ISO 8601 format (YYYY-MM-DD) - measurement date
 }
 
+// API Error response
 export interface APIError {
   timestamp: string
   status: number
